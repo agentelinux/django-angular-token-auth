@@ -1,9 +1,19 @@
-window.angular.module('application.auth', [
-	'application.auth.controllers',
-	'application.auth.interceptors',
-	'application.auth.services'
-]);
+(function () {
+  'use strict';
 
-window.angular.module('application.auth.controllers', []);
-window.angular.module('application.auth.interceptors', []);
-window.angular.module('application.auth.services', []);
+  angular
+    .module('application.auth', [
+      'application.auth.controllers',
+      'application.auth.interceptors',
+      'application.auth.services'
+    ]);
+
+  angular
+    .module('application.auth.controllers', []);
+
+  angular
+    .module('application.auth.interceptors', []);
+
+  angular
+    .module('application.auth.services', []);
+})();

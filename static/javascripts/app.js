@@ -1,9 +1,17 @@
-window.angular.module('application', [
-	'application.config',
-	'application.routes',
-	'application.auth',
-	'application.static'
-]);
+(function () {
+  'use strict';
 
-window.angular.module('application.config', []);
-window.angular.module('application.routes', ['ngRoute']);
+  angular
+    .module('application', [
+      'application.config',
+      'application.routes',
+      'application.auth',
+      'application.static'
+    ]);  
+
+  angular
+    .module('application.config', []);  
+
+  angular
+    .module('application.routes', ['ngRoute']);  
+})();

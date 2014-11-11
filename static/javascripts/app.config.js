@@ -1,6 +1,15 @@
-window.angular.module('application.config')
-	.config(function ($httpProvider, $locationProvider) {
-		$httpProvider.interceptors.push('AuthInterceptor');
+(function () {
+  'use strict';
 
-		$locationProvider.html5Mode(true).hashPrefix('!');
-	});
+  angular
+    .module('application.config')
+    .config(config);
+
+  config.$inject = ['$httpProvider', '$locationProvider'];
+
+  function config($httpProvider, $locationProvider) {
+    $httpProvider.interceptors.push('AuthInterceptor');
+
+    $locationProvider.html5Mode(true).hashPrefix('!');  
+  }
+})();

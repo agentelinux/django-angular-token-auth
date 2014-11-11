@@ -1,9 +1,19 @@
-window.angular.module('application.auth.controllers')
-	.controller('RegisterController', function ($scope, Auth) {
-		$scope.user = {};
-		$scope.register = function () {
-			Auth.register($scope.user).then(function (response, status, headers, config) {
-				// Displays some good things
-			});
-		};
-	});
+(function () {
+  'use strict';
+
+  angular
+    .module('application.auth.controllers')
+    .controller('RegisterController', RegisterController);
+
+  RegisterController.$inject = ['Auth'];
+
+  function RegisterController(Auth) {
+    var vm = this;
+
+    vm.register = register;
+
+    function register() {
+      Auth.register(vm.username, vm.password, vm.email);
+    }
+  }
+})();

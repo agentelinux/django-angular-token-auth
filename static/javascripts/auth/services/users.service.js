@@ -1,20 +1,21 @@
-window.angular.module('application.auth.services')
-	.service('Users', function ($http, $q) {
-		var Users = {
-			all: function () {
-				var deferred = $q.defer();
+(function () {
+  'use strict';
 
-				$http.get('/api/v1/users/').
-				success(function (response, status, headers, config) {
-					deferred.resolve(response, status, headers, config);
-				}).
-				error(function (response, status, headers, config) {
-					deferred.reject(response, status, headers, config);
-				});
+  angular
+    .module('application.auth.services')
+    .factory('Users', Users);
 
-				return deferred.promise;
-			}
-		};
+  Users.$inject = ['$http'];
 
-		return Users;
-	});
+  function Users($http) {
+    var Users = {
+      all: all
+    };
+
+    return Users;
+
+    function all() {
+      return $http.get('/api/v1/users/');
+    }
+  }
+})();

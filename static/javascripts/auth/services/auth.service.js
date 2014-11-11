@@ -1,60 +1,67 @@
-window.angular.module('application.auth.services').
-	service('Auth', function ($http, $location, $q, $window) {
-		var Auth = {
-			getToken: function () {
-				return $window.localStorage.getItem('token');
-			},
+(function () {
+  'use strict';
 
-			setToken: function (token) {
-				$window.localStorage.setItem('token', token);
-			},
+  angular
+    .module('application.auth.services')
+    .factory('Auth', Auth);
 
-			deleteToken: function () {
-				$window.localStorage.removeItem('token');
-			},
+  Auth.$inject = ['$http', '$window'];
 
-			login: function (username, password) {
-				var deferred = $q.defer();
+  function Auth($http, $window) {
+    var Auth = {
+      deleteToken: deleteToken,
+      getToken: getToken,
+      login: login,
+      logout: logout,
+      register: register,
+      setToken: setToken
+    };
 
-				$http.post('/api/v1/auth/login/', {
-					username: username, password: password
-				}).success(function (response, status, headers, config) {
-					if (response.token) {
-						Auth.setToken(response.token);
-					}
+    return Auth;
 
-					deferred.resolve(response, status, headers, config);
-				}).error(function (response, status, headers, config) {
-					deferred.reject(response, status, headers, config);
-				});
+    function deleteToken() {
+      $window.localStorage.removeItem('token');
+    }
 
-				return deferred.promise;
-			},
+    function getToken() {
+      return $window.localStorage.getItem('token');
+    }
 
-			logout: function () {
-				Auth.deleteToken();
-				$window.location = '/';
-			},
+    function login(username, password) {
+      return $http.post('/api/v1/auth/login/', {
+        username: username, password: password
+      }).then(loginSuccessFn, loginErrorFn);
 
-			register: function (user) {
-				var deferred = $q.defer();
+      function loginSuccessFn(data, status, headers, config) {
+        if (data.data.token) {
+          Auth.setToken(data.data.token);
+        }
 
-				$http.post('/api/v1/auth/register/', {
-					user: user
-				}).success(function (response, status, headers, config) {
-					Auth.login(user.username, user.password).
-						then(function (response, status, headers, config) {
-							window.location = '/';
-						});
+        $window.location = '/';
+      }
 
-					deferred.resolve(response, status, headers, config);
-				}).error(function (response, status, headers, config) {
-					deferred.reject(response, status, headers, config);
-				});
+      function loginErrorFn(data, status, headers, config) {
+        console.error(data);
+      }
+    }
 
-				return deferred.promise;
-			}
-		};
+    function logout() {
+      Auth.deleteToken();
+      $window.location = '/';
+    }
 
-		return Auth;
-	});
+    function register(username, password, email) {
+      return $http.post('/api/v1/users/', {
+        username: username, password: password, email: email
+      }).then(registerSuccessFn);
+
+      function registerSuccessFn(data, status, headers, config) {
+        Auth.login(username, password);
+      }
+    }
+
+    function setToken(token) {
+      $window.localStorage.setItem('token', token);
+    }
+  }
+})();

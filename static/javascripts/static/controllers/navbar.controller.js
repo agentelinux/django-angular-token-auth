@@ -1,10 +1,20 @@
-window.angular.module('application.static.controllers')
-	.controller('NavbarController', function ($scope, Auth) {
-		$scope.isLoggedIn = !!Auth.getToken();
+(function () {
+  'use strict';
 
-		$scope.logout = function () {
-			Auth.logout();
+  angular
+    .module('application.static.controllers')
+    .controller('NavbarController', NavbarController);
 
-			return false;
-		};
-	});
+  NavbarController.$inject = ['Auth'];
+
+  function NavbarController(Auth) {
+    var vm = this;
+
+    vm.isLoggedIn = !!Auth.getToken();
+    vm.logout = logout;
+
+    function logout() {
+      Auth.logout();
+    }
+  }
+})();

@@ -1,5 +1,11 @@
-window.angular.module('application.static', [
-	'application.static.controllers'
-]);
+(function () {
+  'use strict';
 
-window.angular.module('application.static.controllers', []);
+  angular
+    .module('application.static', [
+      'application.static.controllers'
+    ]);  
+
+  angular
+    .module('application.static.controllers', []);  
+})();  
